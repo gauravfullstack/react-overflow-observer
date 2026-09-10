@@ -3,23 +3,30 @@ import { useState, useEffect, type RefObject } from "react";
 
 export function useOverflow<T extends HTMLElement>(
   ref: RefObject<T | null>
-): { isOverflowing: boolean } {
-  const [isOverflowing, setIsOverflowing] = useState(false);
+): { isOverflowing: boolean; horizontal: boolean; vertical: boolean } {
+  const [overflow, setOverflow] = useState({
+    isOverflowing: false,
+    horizontal: false,
+    vertical: false,
+  });
 
   useEffect(() => {
     const element = ref.current;
 
     if (!element) {
-      setIsOverflowing(false);
+      setOverflow({ isOverflowing: false, horizontal: false, vertical: false });
       return;
     }
 
-    const nextValue =
-      element.scrollWidth > element.clientWidth ||
-      element.scrollHeight > element.clientHeight;
+    const horizontal = element.scrollWidth > element.clientWidth;
+    const vertical = element.scrollHeight > element.clientHeight;
 
-    setIsOverflowing(nextValue);
+    setOverflow({
+      isOverflowing: horizontal || vertical,
+      horizontal,
+      vertical,
+    });
   }, [ref]);
 
-  return { isOverflowing };
+  return overflow;
 }

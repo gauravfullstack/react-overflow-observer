@@ -10,9 +10,15 @@ afterEach(() => {
 });
 
 function TestComponent({ elementRef }: { elementRef: React.RefObject<HTMLDivElement | null> }) {
-  const { isOverflowing } = useOverflow(elementRef);
+  const { isOverflowing, horizontal, vertical } = useOverflow(elementRef);
 
-  return <div data-testid="status">{String(isOverflowing)}</div>;
+  return (
+    <div>
+      <div data-testid="status">{String(isOverflowing)}</div>
+      <div data-testid="horizontal">{String(horizontal)}</div>
+      <div data-testid="vertical">{String(vertical)}</div>
+    </div>
+  );
 }
 
 describe("useOverflow", () => {
@@ -29,6 +35,8 @@ describe("useOverflow", () => {
     render(<TestComponent elementRef={ref} />);
 
     expect(screen.getByTestId("status").textContent).toBe("false");
+    expect(screen.getByTestId("horizontal").textContent).toBe("false");
+    expect(screen.getByTestId("vertical").textContent).toBe("false");
   });
 
   it("returns true for horizontal overflow", () => {
@@ -44,6 +52,8 @@ describe("useOverflow", () => {
     render(<TestComponent elementRef={ref} />);
 
     expect(screen.getByTestId("status").textContent).toBe("true");
+    expect(screen.getByTestId("horizontal").textContent).toBe("true");
+    expect(screen.getByTestId("vertical").textContent).toBe("false");
   });
 
   it("returns true for vertical overflow", () => {
@@ -59,6 +69,8 @@ describe("useOverflow", () => {
     render(<TestComponent elementRef={ref} />);
 
     expect(screen.getByTestId("status").textContent).toBe("true");
+    expect(screen.getByTestId("horizontal").textContent).toBe("false");
+    expect(screen.getByTestId("vertical").textContent).toBe("true");
   });
 
   it("returns true when both directions overflow", () => {
@@ -74,6 +86,8 @@ describe("useOverflow", () => {
     render(<TestComponent elementRef={ref} />);
 
     expect(screen.getByTestId("status").textContent).toBe("true");
+    expect(screen.getByTestId("horizontal").textContent).toBe("true");
+    expect(screen.getByTestId("vertical").textContent).toBe("true");
   });
 
   it("handles a ref that does not yet have a DOM element", () => {
@@ -82,5 +96,7 @@ describe("useOverflow", () => {
     render(<TestComponent elementRef={ref} />);
 
     expect(screen.getByTestId("status").textContent).toBe("false");
+    expect(screen.getByTestId("horizontal").textContent).toBe("false");
+    expect(screen.getByTestId("vertical").textContent).toBe("false");
   });
 });

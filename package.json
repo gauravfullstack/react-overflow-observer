@@ -1,7 +1,7 @@
 {
   "name": "react-overflow-observer",
-  "version": "1.0.0",
-  "description": "A lightweight React hook that reports whether an element is overflowing its visible container.",
+  "version": "2.0.0",
+  "description": "A lightweight React hook that reports whether an element is overflowing its visible container and in which direction.",
   "author": "react-overflow-observer contributors",
   "license": "ISC",
   "sideEffects": false,
